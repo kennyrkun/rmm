@@ -4,7 +4,7 @@
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
 
-#include <vector>
+#include <map>
 #include <ctime>
 #include <string>
 
@@ -34,7 +34,7 @@ private:
 
 	sf::RenderWindow window;
 
-	std::vector<ClientInformation> clients;
+	std::map<std::string, ClientInformation> clients;
 
 	sf::Font font;
 

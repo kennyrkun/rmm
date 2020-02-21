@@ -56,7 +56,18 @@ void Server::HandleNetworkEvents()
 
 			std::cout << username << " reported login at " << loginTime << " (session length: " << loginSessionLength << ")" << std::endl;
 
-			clients.push_back({senderIP, username, loginTime, loginSessionLength});
+			ClientInformation info = {senderIP, username, loginTime, loginSessionLength};
+			clients.emplace(username, info);
+		}
+		else if (command == "reportUserLogoff")
+		{
+			std::string username = "NO_USER";
+			std::time_t loginTime = 0, loginSessionLength = 0;
+			packet >> username >> loginTime >> loginSessionLength;
+
+			std::cout << username << " reported logoff at " << loginTime << " (session length: " << loginSessionLength << ")" << std::endl;
+
+			clients.erase(clients[username].username);
 		}
 	}
 }
@@ -73,19 +84,21 @@ void Server::Draw()
 	const float height = 40.0f;
 	const float width = 40.0f;
 
-	for (size_t i = 0; i < clients.size(); i++)
+	int loops = 0;
+	for (const auto& [username, info] : clients)
 	{
 		sf::RectangleShape shape;
-		shape.setPosition(sf::Vector2f(padding, (height * i) + padding * i));
+		shape.setPosition(sf::Vector2f(padding, (height * loops) + padding * loops));
 		shape.setSize(sf::Vector2f(width, height));
 		shape.setFillColor(sf::Color::Green);
 		window.draw(shape);
 
 		sf::Text text;
 		text.setFont(font);
-		text.setString(clients[i].username + " : " + getTimestamp(clients[i].loginTime));
+		text.setString(clients[username].username + " : " + getTimestamp(clients[username].loginTime));
 		text.setPosition(shape.getPosition() + sf::Vector2f(width + padding, 0));
 		window.draw(text);
+		loops++;
 	}
 
 	sf::Text text;
@@ -113,7 +126,7 @@ std::string Server::getTimestamp(std::time_t time)
 	if (hours > 12)
 		hours -= 12;
 
-	size_t timezoneOffset = -6;
+	signed int timezoneOffset = -6;
 
 	hours += timezoneOffset;
 

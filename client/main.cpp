@@ -1,24 +1,13 @@
-#include <SFML/Network.hpp>
+#include "Client.hpp"
 
-#include "Windows.hpp"
-
-#include <iostream>
-#include <ctime>
+#include <SFML/System/Sleep.hpp>
 
 int main(int argc, char* argv[])
 {
-	sf::UdpSocket socket;
+	Client client;
 
-	sf::Packet packet;
-	packet << "reportUserLogin";
-	packet << windows::users::getUsername();
-	packet << std::time(0);
-	packet << std::time(0);
-
-	if (socket.send(packet, sf::IpAddress::getLocalAddress(), 1234) == sf::Socket::Status::Done)
-		std::cout << "reported status " << sf::IpAddress::getLocalAddress() << ":1234" << std::endl;
-	else
-		std::cerr << "failed" << std::endl;
+	while (true)
+		sf::sleep(sf::milliseconds(100));
 
 	return 0;
 }
