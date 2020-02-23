@@ -25,6 +25,7 @@ Server::Server(unsigned short port)
 
 Server::~Server()
 {
+	std::cout << "closing server" << std::endl;
 }
 
 void Server::HandleNetworkEvents()
@@ -34,6 +35,7 @@ void Server::HandleNetworkEvents()
 
 	if (event.type == sf::Event::Closed)
 	{
+		std::cout << "window closed, exiting" << std::endl;
 		isRunning = false;
 		return;
 	}
@@ -42,6 +44,7 @@ void Server::HandleNetworkEvents()
 	
 	sf::IpAddress senderIP;
 	unsigned short senderPort;
+	socket.u
 
 	if (socket.receive(packet, senderIP, senderPort) == sf::Socket::Done)
 	{
@@ -52,7 +55,18 @@ void Server::HandleNetworkEvents()
 		{
 			std::string username = "NO_USER";
 			std::time_t loginTime = 0, loginSessionLength = 0;
-			packet >> username >> loginTime >> loginSessionLength;
+
+			#ifdef _WIN32
+				packet >> username >> loginTime >> loginSessionLength
+			#else
+				packet >> username;
+
+				int lt = loginTime;
+				int st = loginSessionLength;
+
+				packet >> lt;
+				packet >> st;
+			#endif
 
 			std::cout << username << " reported login at " << loginTime << " (session length: " << loginSessionLength << ")" << std::endl;
 
@@ -62,8 +76,20 @@ void Server::HandleNetworkEvents()
 		else if (command == "reportUserLogoff")
 		{
 			std::string username = "NO_USER";
-			std::time_t loginTime = 0, loginSessionLength = 0;
-			packet >> username >> loginTime >> loginSessionLength;
+			std::time_t loginTime = 0;
+			std::time_t loginSessionLength = 0;
+
+			#ifdef _WIN32
+				packet >> username >> loginTime >> loginSessionLength
+			#else
+				packet >> username;
+
+				int lt = loginTime;
+				int st = loginSessionLength;
+
+				packet >> lt;
+				packet >> st;
+			#endif
 
 			std::cout << username << " reported logoff at " << loginTime << " (session length: " << loginSessionLength << ")" << std::endl;
 
