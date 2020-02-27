@@ -33,12 +33,12 @@ int Client::send(sf::Packet packet)
 {
 	if (socket.send(packet, address, port) == sf::Socket::Status::Done)
 	{
-		std::cout << "reported status " << sf::IpAddress::getLocalAddress() << ":" << port << std::endl;
+		std::cout << "reported status " << sf::IpAddress("172.16.115.194") << ":" << port << std::endl;
 		return 1;
 	}
 	else
 	{
-		std::cerr << "failed" << std::endl;
+		std::cerr << "failed to send packet" << std::endl;
 		return 0;
 	}
 }

@@ -44,7 +44,6 @@ void Server::HandleNetworkEvents()
 	
 	sf::IpAddress senderIP;
 	unsigned short senderPort;
-	socket.u
 
 	if (socket.receive(packet, senderIP, senderPort) == sf::Socket::Done)
 	{
@@ -57,7 +56,7 @@ void Server::HandleNetworkEvents()
 			std::time_t loginTime = 0, loginSessionLength = 0;
 
 			#ifdef _WIN32
-				packet >> username >> loginTime >> loginSessionLength
+				packet >> username >> loginTime >> loginSessionLength;
 			#else
 				packet >> username;
 
@@ -80,7 +79,7 @@ void Server::HandleNetworkEvents()
 			std::time_t loginSessionLength = 0;
 
 			#ifdef _WIN32
-				packet >> username >> loginTime >> loginSessionLength
+			packet >> username >> loginTime >> loginSessionLength;
 			#else
 				packet >> username;
 
@@ -94,6 +93,10 @@ void Server::HandleNetworkEvents()
 			std::cout << username << " reported logoff at " << loginTime << " (session length: " << loginSessionLength << ")" << std::endl;
 
 			clients.erase(clients[username].username);
+		}
+		else
+		{
+			std::cerr << "unknown command \"" << command << "\" recieved from " << senderIP << std::endl;
 		}
 	}
 }

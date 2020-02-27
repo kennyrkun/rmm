@@ -14,7 +14,7 @@ public:
 	int send(sf::Packet packet);
 
 private:
-	sf::IpAddress address;
+	sf::IpAddress address = sf::IpAddress("172.16.115.194");
 	unsigned int port = 1234;
 
 	sf::UdpSocket socket;
