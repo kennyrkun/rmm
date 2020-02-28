@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <iostream>
+#include <fstream>
 
 Server::Server(unsigned short port)
 {
@@ -25,6 +26,27 @@ Server::Server(unsigned short port)
 
 Server::~Server()
 {
+	std::ofstream saveCurrent("./current_session_list.csv", std::ios::trunc);
+
+	if (saveCurrent.is_open())
+	{
+		saveCurrent << "Username,Login Time,Session Length, IP Address" << std::endl;
+
+		for (const auto&[username, info] : clients)
+			saveCurrent << username << "," << info.loginTime << "," << info.loginSessionLength << "," << info.address << std::endl;
+
+		saveCurrent.close();
+
+		if (saveCurrent.bad())
+		{
+			std::cerr << "something went wrong while saving, the file may be incomplete" << std::endl;
+		}
+	}
+	else
+	{
+		std::cerr << "failed to open list for writing" << std::endl;
+	}
+
 	std::cout << "closing server" << std::endl;
 }
 
