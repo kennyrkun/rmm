@@ -4,6 +4,10 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
 
 Server::Server(unsigned short port)
 {
@@ -12,6 +16,7 @@ Server::Server(unsigned short port)
 	if (socket.bind(port) != sf::Socket::Done)
 	{
 		std::cerr << "failed to bind to port " << port << std::endl;
+		exit(0);
 	}
 
 	std::cout << "local ip " << sf::IpAddress::getLocalAddress() << std::endl;
@@ -22,31 +27,16 @@ Server::Server(unsigned short port)
 	font.loadFromFile("C:/Windows/Fonts/Arial.ttf");
 
 	socket.setBlocking(false);
+
+	room = Room("davis");
+	room.loadRoom();
+
+	std::cout << "SERVER READY" << std::endl;
 }
 
 Server::~Server()
 {
-	std::ofstream saveCurrent("./current_session_list.csv", std::ios::trunc);
-
-	if (saveCurrent.is_open())
-	{
-		saveCurrent << "Username,Login Time,Session Length, IP Address" << std::endl;
-
-		for (const auto&[username, info] : clients)
-			saveCurrent << username << "," << info.loginTime << "," << info.loginSessionLength << "," << info.address << std::endl;
-
-		saveCurrent.close();
-
-		if (saveCurrent.bad())
-		{
-			std::cerr << "something went wrong while saving, the file may be incomplete" << std::endl;
-		}
-	}
-	else
-	{
-		std::cerr << "failed to open list for writing" << std::endl;
-	}
-
+	room.saveRoom();
 	std::cout << "closing server" << std::endl;
 }
 
@@ -91,8 +81,13 @@ void Server::HandleNetworkEvents()
 
 			std::cout << username << " reported login at " << loginTime << " (session length: " << loginSessionLength << ")" << std::endl;
 
-			ClientInformation info = {senderIP, username, loginTime, loginSessionLength};
-			clients.emplace(username, info);
+			if (room.workstations.find(username) == room.workstations.end())
+				std::cout << "entry \"" << username << "\" does not exist in workstation list. " << room.workstations.size() << std::endl;
+			else
+			{
+				std::cout << "updating map entry" << std::endl;
+				room.workstations[username].status = Workstation::Status::Active;
+			}
 		}
 		else if (command == "reportUserLogoff")
 		{
@@ -101,7 +96,7 @@ void Server::HandleNetworkEvents()
 			std::time_t loginSessionLength = 0;
 
 			#ifdef _WIN32
-			packet >> username >> loginTime >> loginSessionLength;
+				packet >> username >> loginTime >> loginSessionLength;
 			#else
 				packet >> username;
 
@@ -114,7 +109,7 @@ void Server::HandleNetworkEvents()
 
 			std::cout << username << " reported logoff at " << loginTime << " (session length: " << loginSessionLength << ")" << std::endl;
 
-			clients.erase(clients[username].username);
+			room.workstations[username].status = Workstation::Status::Inactive;
 		}
 		else
 		{
@@ -136,17 +131,24 @@ void Server::Draw()
 	const float width = 40.0f;
 
 	int loops = 0;
-	for (const auto& [username, info] : clients)
+	for (const auto& [username, info] : room.workstations)
 	{
 		sf::RectangleShape shape;
 		shape.setPosition(sf::Vector2f(padding, (height * loops) + padding * loops));
 		shape.setSize(sf::Vector2f(width, height));
-		shape.setFillColor(sf::Color::Green);
+
+		if (info.status == Workstation::Status::Active)
+			shape.setFillColor(sf::Color::Green);
+		else if (info.status == Workstation::Status::Locked)
+			shape.setFillColor(sf::Color::Yellow);
+		else
+			shape.setFillColor(sf::Color::Red);
+
 		window.draw(shape);
 
 		sf::Text text;
 		text.setFont(font);
-		text.setString(clients[username].username + " : " + getTimestamp(clients[username].loginTime));
+		text.setString(room.workstations[username].username + " : " + std::to_string(room.workstations[username].loginTime));
 		text.setPosition(shape.getPosition() + sf::Vector2f(width + padding, 0));
 		window.draw(text);
 		loops++;
@@ -154,7 +156,7 @@ void Server::Draw()
 
 	sf::Text text;
 	text.setFont(font);
-	text.setString(std::to_string(clients.size()));
+	text.setString(std::to_string(room.workstations.size()));
 	window.draw(text);
 
 	window.display();
