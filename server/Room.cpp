@@ -48,7 +48,7 @@ bool Room::loadRoom()
 			std::getline(ss, token, ',');
 			workstation.address = sf::IpAddress(token);
 
-			workstations.emplace(line, workstation);
+			workstations.emplace(workstation.username, workstation);
 		}
 
 		std::cout << "loaded session layout" << std::endl;
