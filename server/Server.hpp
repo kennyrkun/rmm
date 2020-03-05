@@ -4,7 +4,6 @@
 #include "Room.hpp"
 
 #include <SFML/Network.hpp>
-#include <SFML/Graphics.hpp>
 
 #include <map>
 #include <ctime>
@@ -18,18 +17,11 @@ public:
 
 	void HandleNetworkEvents();
 	void Update();
-	void Draw();
 
 	bool isRunning = false;
 
 private:
 	sf::UdpSocket socket;
-
-	sf::RenderWindow window;
-
-	sf::Font font;
-
-	std::string getTimestamp(std::time_t time = std::time(0));
 
 	Room room;
 };
