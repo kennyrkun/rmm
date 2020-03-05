@@ -1,13 +1,21 @@
-#include "Client.hpp"
-
-#include <SFML/System/Sleep.hpp>
+#include "AppEngine.hpp"
+#include "ServerConnectState.hpp"
 
 int main(int argc, char* argv[])
 {
-	Client client;
+	AppSettings settings = { "RMM", "ALPHA", { argc, argv } };
 
-	while (true)
-		sf::sleep(sf::milliseconds(100));
+	AppEngine app;
+	app.Init(settings);
 
-	return 0;
+	app.PushState(new ServerConnectState);
+
+	while (app.isRunning())
+	{
+		app.HandleEvents();
+		app.Update();
+		app.Draw();
+	}
+
+	return EXIT_SUCCESS;
 }

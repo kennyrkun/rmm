@@ -1,7 +1,5 @@
 #include "Client.hpp"
 
-#include <SFML/Network/Packet.hpp>
-
 #include "Windows.hpp"
 
 #include <iostream>
@@ -9,24 +7,35 @@
 
 Client::Client()
 {
-	sf::Packet packet;
-	packet << "reportUserLogin";
-	packet << windows::users::getUsername();
-	packet << std::time(0);
-	packet << std::time(0);
-
-	send(packet);
+	running = true;
 }
 
 Client::~Client()
 {
-	sf::Packet packet;
-	packet << "reportUserLogoff";
-	packet << windows::users::getUsername();
-	packet << std::time(0);
-	packet << std::time(0);
+	running = false;
+}
 
-	send(packet);
+void Client::HandleEvents()
+{
+	sf::Event event;
+	while (window.pollEvent(event))
+	{
+		if (event.type == sf::Event::EventType::Closed)
+		{
+			window.close();
+		 	// possibly inform server that management client has disconnected
+		}
+	}
+}
+
+void Client::Update()
+{
+}
+
+void Client::Draw()
+{
+	window.clear();
+	window.display();
 }
 
 int Client::send(sf::Packet packet)

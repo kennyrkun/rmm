@@ -8,7 +8,6 @@ int main(int argc, char* argv[])
 	{
 		server.HandleNetworkEvents();
 		server.Update();
-		server.Draw();
 
 		sf::sleep(sf::milliseconds(100));
 	}

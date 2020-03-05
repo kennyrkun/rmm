@@ -100,7 +100,7 @@ namespace client_service_windows
             ManagementObjectCollection collection = searcher.Get();
             string username = (string)collection.Cast<ManagementBaseObject>().First()["UserName"];
 
-            byte[] actualMessage = Combine(WrapString("reportUserLogin"), WrapString(username), WrapString(unixTimestamp.ToString()), WrapString(unixTimestamp.ToString()));
+            byte[] actualMessage = Combine(WrapString("reportUserLogin"), WrapString(username.Substring(8, username.Length)), WrapString(unixTimestamp.ToString()), WrapString(unixTimestamp.ToString()));
 
             log.WriteEntry("Sending data to server: " + Encoding.ASCII.GetString(actualMessage) + " (" + actualMessage.Length + " bytes)");
 
@@ -120,7 +120,7 @@ namespace client_service_windows
             ManagementObjectCollection collection = searcher.Get();
             string username = (string)collection.Cast<ManagementBaseObject>().First()["UserName"];
 
-            byte[] actualMessage = Combine(WrapString("reportUserLogoff"), WrapString(username), WrapString(unixTimestamp.ToString()), WrapString(unixTimestamp.ToString()));
+            byte[] actualMessage = Combine(WrapString("reportUserLogoff"), WrapString(username.Substring(8, username.Length)), WrapString(unixTimestamp.ToString()), WrapString(unixTimestamp.ToString()));
 
             log.WriteEntry("Sending data to server: " + Encoding.ASCII.GetString(actualMessage) + " (" + actualMessage.Length + " bytes)");
 

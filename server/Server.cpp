@@ -46,17 +46,17 @@ void Server::HandleNetworkEvents()
 		std::string command;
 		packet >> command;
 
-		std::cout << "received command: " << command << std::endl;
+		std::cout << senderIP.toString() << ":" << senderPort << ": " << command << std::endl;
 
 		if (command == "requestRoomInformation")
 		{
 			sf::Packet packet;
-			packet << room.getRoomInformation();
+			packet << "roomInformation" << room.getRoomInformation();
 
-			if (!socket.send(packet, senderIP, senderPort))
-			{
-				std::cerr << "it ain't senden" << std::endl;
-			}
+			if (socket.send(packet, senderIP, senderPort) == sf::Socket::Done)
+				std::cout << "sent room information to client" << std::endl;
+			else
+				std::cerr << "failed to send message" << std::endl;
 		}
 		else if (command == "reportUserLogin")
 		{
@@ -68,7 +68,7 @@ void Server::HandleNetworkEvents()
 			#else
 				packet >> username;
 
-				int lt = loginTime;
+				int lt = lognTime;
 				int st = loginSessionLength;
 
 				packet >> lt;

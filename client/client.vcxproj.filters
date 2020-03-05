@@ -5,24 +5,66 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{983ee5c8-6796-4a98-a42a-7d64aea7bc88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AppEngine">
+      <UniqueIdentifier>{05f96832-a2cb-43b4-aa84-2e718b957c58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\App States">
+      <UniqueIdentifier>{6bf0359e-fe7c-4f96-a94f-9a3a25882930}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Network.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
     <ClCompile Include="Windows.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Client.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="AppEngine.cpp">
+      <Filter>Source Files\AppEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerConnectState.cpp">
+      <Filter>Source Files\App States</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomOverviewState.cpp">
+      <Filter>Source Files\App States</Filter>
+    </ClCompile>
+    <ClCompile Include="VisualWorkstation.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Windows.hpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Network.hpp">
+      <Filter>Source Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Client.hpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="AppState.hpp">
+      <Filter>Source Files\AppEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="AppEngine.hpp">
+      <Filter>Source Files\AppEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerConnectState.hpp">
+      <Filter>Source Files\App States</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomOverviewState.hpp">
+      <Filter>Source Files\App States</Filter>
+    </ClInclude>
+    <ClInclude Include="VisualWorkstation.hpp">
+      <Filter>Source Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
