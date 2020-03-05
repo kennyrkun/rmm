@@ -88,3 +88,16 @@ bool Room::saveRoom()
 		return false;
 	}
 }
+
+const std::string Room::getRoomInformation()
+{
+	std::ifstream fileContent("./room_" + name + ".csv", std::ios::in | std::ios::binary);
+
+	if (fileContent.is_open())
+		return std::string((std::istreambuf_iterator<char>(fileContent)), std::istreambuf_iterator<char>());
+	else
+	{
+		std::cerr << "failed to open list for writing" << std::endl;
+		return "broke";
+	}
+}

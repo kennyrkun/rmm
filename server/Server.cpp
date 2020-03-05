@@ -46,7 +46,18 @@ void Server::HandleNetworkEvents()
 		std::string command;
 		packet >> command;
 
-		if (command == "reportUserLogin")
+		std::cout << "received command: " << command << std::endl;
+
+		if (command == "requestRoomInformation")
+		{
+			sf::Packet packet;
+			packet << room.getRoomInformation();
+
+			if (!socket.send(packet, senderIP, senderPort))
+			{
+				std::cerr << "it ain't senden" << std::endl;
+			}
+		}
 		else if (command == "reportUserLogin")
 		{
 			std::string username = "NO_USER";

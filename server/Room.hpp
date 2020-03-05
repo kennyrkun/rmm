@@ -16,6 +16,8 @@ public:
 	bool loadRoom();
 	bool saveRoom();
 
+	const std::string getRoomInformation();
+
 	std::map<std::string, Workstation> workstations;
 };
 
