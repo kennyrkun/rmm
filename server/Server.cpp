@@ -1,6 +1,5 @@
 #include "Server.hpp"
 
-#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -21,9 +20,6 @@ Server::Server(unsigned short port)
 	std::cout << "local ip " << sf::IpAddress::getLocalAddress() << std::endl;
 	std::cout << "port" << socket.getLocalPort() << std::endl;
 
-	window.create(sf::VideoMode(800, 600), "rmm-server");
-
-	font.loadFromFile("C:/Windows/Fonts/Arial.ttf");
 	socket.setBlocking(false);
 
 	room = Room("davis");
@@ -40,14 +36,6 @@ Server::~Server()
 
 void Server::HandleNetworkEvents()
 {
-
-	if (event.type == sf::Event::Closed)
-	{
-		std::cout << "window closed, exiting" << std::endl;
-		isRunning = false;
-		return;
-	}
-
 	sf::Packet packet;
 	
 	sf::IpAddress senderIP;
@@ -117,12 +105,4 @@ void Server::HandleNetworkEvents()
 
 void Server::Update()
 {
-}
-	if (hours < 10)
-		hours_s.insert(0, "0");
-	*/
-
-	std::string timestamp = hours_s + ":" + minutes_s + ":" + seconds_s;
-
-	return timestamp;
 }
