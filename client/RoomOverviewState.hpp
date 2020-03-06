@@ -28,7 +28,7 @@ private:
 
 	std::string roomName;
 
-	sf::UdpSocket socket;
+	sf::TcpSocket socket;
 
 	void rebuildMenu();
 };

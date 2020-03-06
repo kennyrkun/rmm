@@ -41,7 +41,7 @@ struct AppSettings
 	struct Server
 	{
 		sf::IpAddress serverIpAddress = sf::IpAddress::LocalHost;
-		unsigned short serverPort = 1234;
+		unsigned short serverPort = 12345;
 
 		bool connected = false;
 	} server;

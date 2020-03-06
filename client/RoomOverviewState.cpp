@@ -15,6 +15,7 @@
 
 namespace fs = std::experimental::filesystem;
 
+RoomOverviewState::RoomOverviewState(const std::string& roomName)
 {
 	this->roomName = roomName;
 }
@@ -27,12 +28,14 @@ void RoomOverviewState::Init(AppEngine* app_)
 
 	app->window.create(app->settings.graphics.dimensions, "RMM", sf::Style::Default);
 
-	if (!socket.bind(sf::Socket::AnyPort))
-		std::cout << "bound to port: " << socket.getLocalPort() << std::endl;
+	if (!socket.connect(app->settings.server.serverIpAddress, app->settings.server.serverPort))
+		std::cout << "connected to server" << std::endl;
 	else
-		std::cerr << "failed to bind to port" << std::endl;
+		std::cerr << "failed to connect to server" << std::endl;
 
 	rebuildMenu();
+
+	socket.setBlocking(false);
 
 	std::cout << "RoomOverviewState ready" << std::endl;
 }
@@ -58,6 +61,43 @@ void RoomOverviewState::Resume()
 
 void RoomOverviewState::HandleEvents()
 {
+	sf::Packet packet;
+	sf::Socket::Status status = socket.receive(packet);
+
+	switch (status)
+	{
+	case sf::Socket::Done:
+	{
+		std::string command;
+		packet >> command;
+
+		std::cout << command << std::endl;
+
+		if (command == "notifyRoomUpdate")
+		{
+			socket.setBlocking(true);
+			rebuildMenu();
+			socket.setBlocking(false);
+		}
+
+		break;
+	}
+	case sf::Socket::NotReady:
+		break;
+	case sf::Socket::Partial:
+		std::cout << "partial" << std::endl;
+		break;
+	case sf::Socket::Disconnected:
+		std::cerr << "shit" << std::endl;
+		app->Quit();
+		break;
+	case sf::Socket::Error:
+		std::cerr << "error" << std::endl;
+		break;
+	default:
+		break;
+	}
+
 	sf::Event event;
 
 	while (app->window.pollEvent(event))
@@ -101,13 +141,13 @@ void RoomOverviewState::rebuildMenu()
 	
 	sf::Packet packet;
 	packet << "requestRoomInformation";
-	socket.send(packet, app->settings.server.serverIpAddress, app->settings.server.serverPort);
-
-	sf::IpAddress address;
-	unsigned short port;
+	if (socket.send(packet) != sf::Socket::Done)
+		std::cerr << "failed to send message" << std::endl;
+	else
+		std::cout << "message sent" << std::endl;
 
 	sf::Packet packetin;
-	if (socket.receive(packetin, address, port) == sf::Socket::Done)
+	if (socket.receive(packetin) == sf::Socket::Done)
 	{
 		std::cout << "received response from server: ";
 		std::string command;

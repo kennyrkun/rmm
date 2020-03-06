@@ -15,8 +15,6 @@ struct NetworkEvent
 	sf::IpAddress sender;
 	unsigned short port;
 	*/
-
-
 };
 
 class Network
