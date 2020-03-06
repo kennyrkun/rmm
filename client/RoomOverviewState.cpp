@@ -15,6 +15,10 @@
 
 namespace fs = std::experimental::filesystem;
 
+{
+	this->roomName = roomName;
+}
+
 void RoomOverviewState::Init(AppEngine* app_)
 {
 	std::cout << "RoomOverviewState initialising" << std::endl;

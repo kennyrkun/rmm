@@ -48,7 +48,7 @@ void ServerConnectState::Init(AppEngine* app_)
 
 	initialise();
 
-	app->ChangeState(new RoomOverviewState);
+	app->ChangeState(new RoomOverviewState("davis"));
 }
 
 void ServerConnectState::Cleanup()

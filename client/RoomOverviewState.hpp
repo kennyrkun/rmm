@@ -11,6 +11,8 @@
 class RoomOverviewState : public AppState
 {
 public:
+	RoomOverviewState(const std::string& roomName);
+
 	void Init(AppEngine* app_);
 	void Cleanup();
 
@@ -24,9 +26,11 @@ public:
 private:
 	SFUI::Menu* menu;
 
-	void rebuildMenu();
+	std::string roomName;
 
 	sf::UdpSocket socket;
+
+	void rebuildMenu();
 };
 
 #endif // !ROOM_OVERVIEW_STATE_HPP

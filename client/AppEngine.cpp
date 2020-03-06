@@ -44,10 +44,15 @@ void AppEngine::Init(AppSettings settings_)
 			settings.graphics.maxfps = std::stoi(settings.launchOptions.argv[i += 1]);
 	}
 
-	if (!fs::exists("./sflcars"))
-		fs::create_directory("./sflcars");
-
-	window.create(sf::VideoMode(500, 400), "VoidChat 2", sf::Style::Default);
+	if (!fs::exists("./rmm"))
+	{
+		fs::create_directory("./rmm");
+		fs::create_directory("./rmm/resource");
+		fs::create_directory("./rmm/resource/textures");
+		fs::create_directory("./rmm/resource/fonts");
+		fs::create_directory("./rmm/cache");
+		fs::create_directory("./rmm/cache/rooms");
+	}
 
 	running = true;
 
