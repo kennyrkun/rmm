@@ -51,12 +51,10 @@ void Server::HandleNetworkEvents()
 		if (command == "requestRoomInformation")
 		{
 			sf::Packet packet;
-			packet << "roomInformation" << room.getRoomInformation();
+			packet << "returnRoomInformation" << room.getRoomInformation();
 
-			if (socket.send(packet, senderIP, senderPort) == sf::Socket::Done)
-				std::cout << "sent room information to client" << std::endl;
-			else
-				std::cerr << "failed to send message" << std::endl;
+			if (!socket.send(packet, senderIP, senderPort) == sf::Socket::Done)
+				std::cerr << "failed to return room information to client." << std::endl;
 		}
 		else if (command == "reportUserLogin")
 		{
@@ -82,7 +80,7 @@ void Server::HandleNetworkEvents()
 			else
 			{
 				std::cout << "updating map entry" << std::endl;
-				room.workstations[username].status = Workstation::Status::Active;
+				room.workstations[username].status = Workstation::Status::LoggedIn;
 			}
 		}
 		else if (command == "reportUserLogoff")
@@ -105,7 +103,7 @@ void Server::HandleNetworkEvents()
 
 			std::cout << username << " reported logoff at " << loginTime << " (session length: " << loginSessionLength << ")" << std::endl;
 
-			room.workstations[username].status = Workstation::Status::Inactive;
+			room.workstations[username].status = Workstation::Status::NotLoggedIn;
 		}
 		else
 		{

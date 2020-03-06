@@ -20,13 +20,14 @@ void VisualWorkstation::setStatus(Status status)
 {
 	switch (status)
 	{
-	case VisualWorkstation::Status::Inactive:
+	case VisualWorkstation::Status::NotLoggedIn:
 		statusIndicator.setFillColor(sf::Color::Red);
 		break;
 	case VisualWorkstation::Status::Locked:
 		statusIndicator.setFillColor(sf::Color::Yellow);
 		break;
-	case VisualWorkstation::Status::Active:
+	case VisualWorkstation::Status::LoggedIn:
+	case VisualWorkstation::Status::Unlocked:
 		statusIndicator.setFillColor(sf::Color::Green);
 		break;
 	default:

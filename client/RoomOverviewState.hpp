@@ -22,9 +22,6 @@ public:
 	void Draw();
 
 private:
-	AppEngine* app;
-	// FIXME: shouldn't need to be a pointer
-
 	SFUI::Menu* menu;
 
 	void rebuildMenu();

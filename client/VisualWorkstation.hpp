@@ -9,12 +9,13 @@ class VisualWorkstation : public SFUI::Widget
 public:
 	VisualWorkstation(const sf::String& string);
 
-	enum class Status
+	enum Status
 	{
-		Inactive,
+		LoggedIn,
+		NotLoggedIn,
+		Unlocked,
 		Locked,
-		Active,
-	};
+	} status = Status::NotLoggedIn;
 
 	void setStatus(Status status);
 

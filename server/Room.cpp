@@ -51,7 +51,7 @@ bool Room::loadRoom()
 			workstations.emplace(workstation.username, workstation);
 		}
 
-		std::cout << "loaded session layout" << std::endl;
+		std::cout << "loadeded " << workstations.size() << " workstations into " << name << std::endl;
 		return true;
 	}
 	else
@@ -91,13 +91,15 @@ bool Room::saveRoom()
 
 const std::string Room::getRoomInformation()
 {
-	std::ifstream fileContent("./room_" + name + ".csv", std::ios::in | std::ios::binary);
+	std::string roomInformation("");
 
-	if (fileContent.is_open())
-		return std::string((std::istreambuf_iterator<char>(fileContent)), std::istreambuf_iterator<char>());
-	else
+	for (const auto& [name, station] : workstations)
 	{
-		std::cerr << "failed to open list for writing" << std::endl;
-		return "broke";
+		roomInformation += station.username + ",";
+		roomInformation += std::to_string(static_cast<int>(station.status));
+		roomInformation += "\n";
+		// don't need anything else in here right now
 	}
+
+	return roomInformation;
 }

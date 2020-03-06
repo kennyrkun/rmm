@@ -9,12 +9,18 @@
 class Workstation
 {
 public:
-	enum class Status
+	enum Status
 	{
-		Active,
-		Inactive,
+		LoggedIn,
+		NotLoggedIn,
+		Unlocked,
 		Locked,
-	} status = Status::Inactive;
+	} status = Status::NotLoggedIn;
+
+	/*
+	std::string machineName;
+	std::string networkName;
+	*/
 
 	std::string username;
 	std::time_t loginTime;

@@ -105,15 +105,15 @@ void RoomOverviewState::rebuildMenu()
 	sf::Packet packetin;
 	if (socket.receive(packetin, address, port) == sf::Socket::Done)
 	{
-		std::cout << "received response from server" << std::endl;
-
+		std::cout << "received response from server: ";
 		std::string command;
+		packetin >> command;
+		std::cout << command << std::endl;
+
 		std::string information;
+		packetin >> information;
 
-		packetin >> command >> information;
-
-		// remove the first line because it's the CSV column headers
-		information.erase(0, information.find_first_of('\n') + 1);
+		std::cout << information << std::endl;
 
 		std::istringstream iss(information);
 
@@ -123,7 +123,12 @@ void RoomOverviewState::rebuildMenu()
 			std::stringstream ss(line);
 
 			std::getline(ss, token, ',');
-			menu->add(new VisualWorkstation(token));
+			VisualWorkstation* station = new VisualWorkstation(token);
+
+			std::getline(ss, token, ',');
+			station->setStatus(static_cast<VisualWorkstation::Status>(std::stoi(token)));
+
+			menu->add(station);
 		}
 	}
 
