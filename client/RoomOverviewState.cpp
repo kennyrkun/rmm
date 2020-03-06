@@ -149,7 +149,6 @@ void RoomOverviewState::rebuildMenu()
 	sf::Packet packetin;
 	if (socket.receive(packetin) == sf::Socket::Done)
 	{
-		std::cout << "received response from server: ";
 		std::string command;
 		packetin >> command;
 		std::cout << command << std::endl;

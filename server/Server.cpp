@@ -162,12 +162,12 @@ void Server::HandleNetworkEvents()
 		}
 		else
 		{
-			std::cout << "else" << std::endl;
-
 			for (auto& socket : tcpSockets)
 			{
 				if (selector.isReady(*socket))
 				{
+					std::cout << socket->getRemoteAddress() << ":" << socket->getRemotePort() << " (tcpSocket)" << std::endl;
+
 					sf::Packet packet;
 
 					if (socket->receive(packet) == sf::Socket::Done)
