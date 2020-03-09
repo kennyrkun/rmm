@@ -134,12 +134,7 @@ void RoomOverviewState::rebuildMenu()
 	std::cout << "building menu" << std::endl;
 
 	if (menu)
-	{
-		std::cout << "menu already exists, removing" << std::endl;
-		//delete menu;
-	}
-
-	std::cout << "preparing menu" << std::endl;
+		delete menu;
 
 	menu = new SFUI::Menu(app->window);
 	menu->setPosition(sf::Vector2f(10, 10));

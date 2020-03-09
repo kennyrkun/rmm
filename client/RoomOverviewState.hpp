@@ -24,7 +24,7 @@ public:
 	void Draw();
 
 private:
-	SFUI::Menu* menu;
+	SFUI::Menu* menu = nullptr;
 
 	std::string roomName;
 
