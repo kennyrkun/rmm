@@ -1,8 +1,8 @@
 #ifndef APP_ENGINE_HPP
 #define APP_ENGINE_HPP
 
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Network/IpAddress.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
 
 #include <vector>
 #include <string>
@@ -11,8 +11,8 @@ class AppState;
 
 struct AppSettings
 {
-	std::string title = "voidchat " + version;
-	std::string version = "2.5-20w07a";
+	std::string version = "1-20w07a";
+	std::string title = "rmm " + version;
 
 	struct CommandLineArguments
 	{
@@ -50,6 +50,8 @@ struct AppSettings
 class AppEngine
 {
 public:
+	AppEngine();
+
 	void Init(AppSettings settings_);
 	void Cleanup();
 
@@ -72,7 +74,6 @@ public:
 	sf::RenderWindow window;
 
 	std::vector<AppState*> states;
-	std::vector<sf::Event> events;
 
 private:
 	bool running;

@@ -134,10 +134,17 @@ void RoomOverviewState::rebuildMenu()
 	std::cout << "building menu" << std::endl;
 
 	if (menu)
-		delete menu;
+	{
+		std::cout << "menu already exists, removing" << std::endl;
+		//delete menu;
+	}
+
+	std::cout << "preparing menu" << std::endl;
 
 	menu = new SFUI::Menu(app->window);
 	menu->setPosition(sf::Vector2f(10, 10));
+
+	std::cout << "requesting room information from server" << std::endl;
 	
 	sf::Packet packet;
 	packet << "requestRoomInformation";

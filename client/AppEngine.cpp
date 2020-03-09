@@ -2,7 +2,7 @@
 #include "AppState.hpp"
 
 #include <iostream>
-#include <filesystem>
+#include <experimental/filesystem>
 
 namespace fs = std::experimental::filesystem;
 
@@ -10,6 +10,11 @@ namespace fs = std::experimental::filesystem;
 // AppEngine is the core of the application,
 // and should rely on as little external
 // resources as reasonably possible.
+
+AppEngine::AppEngine()
+{
+	std::cout << "appengine constructed" << std::endl;
+}
 
 void AppEngine::Init(AppSettings settings_)
 {

@@ -29,7 +29,7 @@ void ServerConnectState::Init(AppEngine* app_)
 			std::cerr << "failed to load font Arial!" << std::endl;
 	}
 
-	app->window.create(sf::VideoMode(400, 150), "voidchat" + app->settings.version, sf::Style::None);
+	app->window.create(sf::VideoMode(400, 150), app->settings.title, sf::Style::None);
 	app->window.setVerticalSyncEnabled(app->settings.graphics.vsync);
 	app->window.setTitle("rmm initalising");
 
@@ -89,7 +89,7 @@ void ServerConnectState::Draw()
 
 void ServerConnectState::initialise()
 {
-	SFUI::Theme::loadFont("C:/Windows/Fonts/Arial.ttf");
+	SFUI::Theme::loadFont("./rmm/resource/fonts/arial.ttf");
 	SFUI::Theme::loadTexture("./rmm/resource/textures/square.png");
 
 	SFUI::Theme::textCharacterSize = 11;
