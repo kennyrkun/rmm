@@ -331,3 +331,12 @@ ASALocalRun/
 
 /SFML
 /SFUI
+*/CMakeFiles/
+*/CMakeCache.txt
+*/Makefile
+*/cmake_install.cmake
+*.so
+*.a
+*.dll
+*.lib
+*.exe
